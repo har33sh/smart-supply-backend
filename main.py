@@ -14,6 +14,18 @@ logger.debug("Initializing FastAPI app...")
 app = FastAPI()
 logger.debug("FastAPI app initialized. Ready to start server.")
 
+def clean_nans(obj):
+    if isinstance(obj, dict):
+        return {k: clean_nans(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [clean_nans(v) for v in obj]
+    elif isinstance(obj, float):
+        if np.isnan(obj) or obj in [np.inf, -np.inf]:
+            return None
+        return obj
+    else:
+        return obj
+
 @app.get("/summary")
 def get_summary():
     # Load PO tracking data
@@ -41,8 +53,8 @@ def get_po(po_id: str):
     if po_row.empty:
         logger.debug(f"PO ID {po_id} not found.")
         return JSONResponse(content={"error": f"PO ID {po_id} not found."}, status_code=404)
-    # Replace non-JSON-compliant values and convert to dict
-    po_row = po_row.replace([np.inf, -np.inf], np.nan)
-    po_row = po_row.where(pd.notnull(po_row), None)
+    # Convert to dict and clean NaNs/Infs
+    record = po_row.to_dict(orient="records")[0]
+    record = clean_nans(record)
     logger.debug(f"Returning data for PO ID: {po_id}")
-    return JSONResponse(content=po_row.to_dict(orient="records")[0]) 
+    return JSONResponse(content=record) 
