@@ -55,7 +55,7 @@ def analyze_email_with_openrouter(email_text, api_key: Optional[str] = None):
     return json.loads(response.choices[0].message.content)
 
 # # Input text
-# input_text = "dispatch@tirupurmart.in,\"Hi Sir, Fabric quality is not matching as per sample given. Please advise what to do.\""
+# input_text = "dispatch@tirupurmart.in, Hi Sir, Fabric quality is not matching as per sample given. Please advise what to do.""
 
 
 # # Analyze the email content
