@@ -35,16 +35,13 @@ def dataframe_to_json(df: pd.DataFrame) -> str:
     return df.to_json(orient='records', indent=2) if df is not None else "[]"
 
 
-def get_po_tracking_data(filepath: str) -> Optional[pd.DataFrame]:
+def get_po_tracking_data(filepath: str):
     """
-    Loads the PO tracking data from a CSV file.
-
-    Args:
-        filepath: Path to the CSV file.
-
-    Returns:
-        A pandas JSON otherwise None.
+    Loads the PO tracking data from a CSV file and returns a list of dicts.
     """
     df = load_po_tracking_data(filepath)
-    print(df)
-    return dataframe_to_json(df)
+    if df is not None:
+        import numpy as np
+        df = df.replace([np.inf, -np.inf], np.nan).where(pd.notnull(df), None)
+        return df.to_dict(orient="records")
+    return None
