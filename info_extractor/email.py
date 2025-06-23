@@ -12,23 +12,25 @@
 import os
 import json
 from openai import OpenAI
+from typing import Optional
 
-os.environ["OPENROUTER_API_KEY"] = OPEN_ROUTER_API
+def get_openrouter_client(api_key: Optional[str] = None):
+    api_key = api_key or os.getenv("OPEN_ROUTER_API")
+    if not api_key:
+        raise ValueError("OPEN_ROUTER_API is not set.")
+    return OpenAI(
+        base_url="https://openrouter.ai/api/v1",
+        api_key=api_key,
+    )
 
-client = OpenAI(
-  base_url="https://openrouter.ai/api/v1",
-  api_key=OPEN_ROUTER_API,
-)
-
-def analyze_email_with_openrouter(email_text):
+def analyze_email_with_openrouter(email_text, api_key: Optional[str] = None):
     """
     Analyzes email text using OpenRouter API to extract information in a JSON format.
-
     Args:
         email_text: The input email text as a string.
-
+        api_key: Optional API key to override environment variable.
     Returns:
-        A JSON formatted string containing the extracted information.
+        A dict containing the extracted information.
     """
     prompt = f"""Analyze the following email text and extract the following information in a JSON format:
     email: The email address mentioned in the text.
@@ -42,16 +44,15 @@ def analyze_email_with_openrouter(email_text):
 
     Return only the JSON object, no extra text.
     """
-
+    client = get_openrouter_client(api_key)
     response = client.chat.completions.create(
-      model="deepseek/deepseek-r1-0528:free",  # You can choose a specific model here
-      messages=[
-        {"role": "user", "content": prompt},
-      ],
-      response_format={"type": "json_object"},
+        model="deepseek/deepseek-r1-0528:free",
+        messages=[
+            {"role": "user", "content": prompt},
+        ],
+        response_format={"type": "json_object"},
     )
-
-    return json.dumps(json.loads(response.choices[0].message.content), indent=2)
+    return json.loads(response.choices[0].message.content)
 
 # # Input text
 # input_text = "dispatch@tirupurmart.in,\"Hi Sir, Fabric quality is not matching as per sample given. Please advise what to do.\""
