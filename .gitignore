@@ -70,3 +70,4 @@ Pipfile.lock
 
 # VS Code
 .vscode/ 
+.vercel
