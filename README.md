@@ -14,6 +14,8 @@ A simple FastAPI backend with two endpoints:
    ```
 3. **(Optional) Set up environment variables**
    - Copy `.env.example` to `.env` and edit as needed.
+4. **Place your PO tracking data CSV**
+   - The file should be located at `dataset/po_data_summary/po_tracking_data.csv`.
 
 ## Running the Server
 
@@ -24,9 +26,9 @@ uvicorn main:app --reload
 ## Endpoints
 
 - `GET /summary`
-  - Returns: `{ "summary": "This is a summary." }`
+  - Returns: All PO summary data as JSON from the CSV.
 - `GET /po/{po_id}`
-  - Returns: `{ "po_id": "<po_id>", "details": "Details for PO." }`
+  - Returns: Details for the specified PO ID from the CSV.
 
 ---
 
