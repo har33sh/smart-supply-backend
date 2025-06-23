@@ -52,6 +52,8 @@ def analyze_email_with_openrouter(email_text, api_key: Optional[str] = None):
         ],
         response_format={"type": "json_object"},
     )
+
+
     return json.loads(response.choices[0].message.content)
 
 # # Input text
@@ -63,3 +65,4 @@ def analyze_email_with_openrouter(email_text, api_key: Optional[str] = None):
 
 # # Print the JSON output
 # print(json_output)
+
