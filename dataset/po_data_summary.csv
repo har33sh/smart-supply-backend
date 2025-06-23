@@ -1,0 +1,6 @@
+po_number,supplier,status,start_date,end_date,milestone_date,flag
+2025/351,Joia Cavado Industria,Complete,2025-02-26,2025-02-28,2025-02-28,
+2025/354,John Hughes Fabrics,Confirmed,2025-02-26,2025-03-03,2025-03-01,yes
+2025/356,BMC Fabrics,In Production,2025-02-27,2025-03-06,2025-03-04,
+2025/357,Joia Cavado Industria,Partial,2025-02-28,2025-03-07,2025-03-05,
+2025/358,John Hughes Fabrics,Confirmed,2025-02-29,2025-03-08,2025-03-06,
