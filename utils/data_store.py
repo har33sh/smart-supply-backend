@@ -1,10 +1,18 @@
+import json
+import os
+
 class InMemoryDB:
     po_records = []
 
     @classmethod
     def load_data(cls, filepath):
-        from utils.load_data import get_all_po_records
-        cls.po_records = get_all_po_records(filepath) or []
+        # Load PO data from a JSON file
+        try:
+            with open(filepath, 'r') as f:
+                cls.po_records = json.load(f)
+        except Exception as e:
+            print(f"Error loading PO data from {filepath}: {e}")
+            cls.po_records = []
 
     @classmethod
     def get_all(cls):
@@ -15,4 +23,4 @@ class InMemoryDB:
         for record in cls.po_records:
             if record.get("po_number") == po_number:
                 return record
-        return None 
+        return None
