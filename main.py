@@ -21,8 +21,8 @@ logger.debug("FastAPI app initialized. Ready to start server.")
 
 @app.on_event("startup")
 def load_po_data():
-    csv_path = os.path.join("dataset", "po_data_summary.csv")
-    InMemoryDB.load_data(csv_path)
+    json_path = os.path.join("dataset", "po_data.json")
+    InMemoryDB.load_data(json_path)
     logger.debug("PO data loaded into in-memory database.")
 
 class EmailExtractionRequest(BaseModel):
