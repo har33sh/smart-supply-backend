@@ -8,13 +8,15 @@ A simple FastAPI backend with two endpoints:
 ## Setup
 
 1. **Clone the repository**
-2. **Install dependencies**
+2. **(Optional) Set up Google Authentication**
+   - Place your `client_secret.json` and `token.json` files in the root of the project directory. These are required for Google API access.
+3. **Install dependencies**
    ```bash
    pip install -r requirements.txt
    ```
-3. **(Optional) Set up environment variables**
+4. **(Optional) Set up environment variables**
    - Copy `.env.example` to `.env` and edit as needed.
-4. **Place your PO tracking data CSV**
+5. **Place your PO tracking data CSV**
    - The file should be located at `dataset/po_data_summary/po_tracking_data.csv`.
 
 ## Running the Server

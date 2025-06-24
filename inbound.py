@@ -6,6 +6,7 @@ import google.oauth2.id_token
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from google.auth.exceptions import RefreshError
+import requests
 
 ###############################################################################
 # CONFIG
@@ -135,5 +136,15 @@ async def inbound(request: Request):
                  """).rstrip())
         
         log.info("=" * 72)
+
+        # --- 5. Send to email analysis service ---
+        log.info("🚀 Sending email to analysis service...")
+        try:
+            analysis_payload = {"email_text": f"From: {sender}\n\n{text}"}
+            response = requests.post("http://127.0.0.1:8000/extract-email-info", json=analysis_payload)
+            response.raise_for_status()
+            log.info("✅ Analysis service response: %s", response.json())
+        except requests.exceptions.RequestException as e:
+            log.error("🔥 Failed to call analysis service: %s", e)
 
     return {"status": "ok"}          # 200 tells Pub/Sub to ack

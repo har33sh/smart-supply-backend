@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from utils.data_store import InMemoryDB
 from info_extractor.email import analyze_email_with_openrouter
+from info_extractor.document import analyze_document
 import os
 from dotenv import load_dotenv
 
@@ -26,6 +27,9 @@ def load_po_data():
 
 class EmailExtractionRequest(BaseModel):
     email_text: str
+
+class DocumentExtractionRequest(BaseModel):
+    document_text: str
 
 @app.get("/summary")
 def get_summary():
@@ -53,4 +57,10 @@ async def extract_email_info(payload: EmailExtractionRequest = Body(...)):
         return JSONResponse(content={"result": result})
     except Exception as e:
         logger.error(f"Error extracting email info: {e}")
-        return JSONResponse(content={"error": str(e)}, status_code=500) 
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+
+@app.post("/extract-document-info", summary="Extract info from a document")
+def extract_document_info(payload: DocumentExtractionRequest):
+    logger.info("Received request to analyze document.")
+    result = analyze_document(payload.document_text)
+    return JSONResponse(content={"result": result}) 

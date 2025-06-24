@@ -3,6 +3,7 @@ uvicorn
 pandas
 openai
 python-dotenv
-google-api-python-client 
+google-api-python-client
 google-auth
+requests
 google_auth_oauthlib
